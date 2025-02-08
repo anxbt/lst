@@ -1,0 +1,89 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --gradient-primary: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  --gradient-card: linear-gradient(180deg, rgba(30, 27, 75, 0.5) 0%, rgba(37, 33, 84, 0.5) 100%);
+}
+
+body {
+  @apply bg-[#0B0B1E] text-gray-100;
+  background-image: radial-gradient(circle at 50% 0%, rgba(79, 70, 229, 0.15) 0%, transparent 40%);
+  background-attachment: fixed;
+}
+
+/* Border animation effect for cards */
+.glow-effect {
+  position: relative;
+  isolation: isolate;
+}
+
+.glow-effect::before,
+.glow-effect::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  padding: 2px;
+  background: conic-gradient(
+    from var(--angle),
+    transparent 0%,
+    #4f46e5 15%,
+    #7c3aed 25%,
+    transparent 40%
+  );
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: rotate 3s linear infinite;
+}
+
+.glow-effect::after {
+  animation: rotate 3s linear infinite reverse;
+  opacity: 0.5;
+}
+
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes rotate {
+  to {
+    --angle: 360deg;
+  }
+}
+
+/* Hover enhancement */
+.glow-effect:hover::before,
+.glow-effect:hover::after {
+  animation-duration: 2s;
+  background: conic-gradient(
+    from var(--angle),
+    transparent 0%,
+    #4f46e5 20%,
+    #7c3aed 30%,
+    transparent 45%
+  );
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-[#151530];
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #4f46e5 0%, #7c3aed 100%);
+  @apply rounded-full;
+}
