@@ -7,47 +7,51 @@ import { FilterBar } from './components/FilterBar';
 import { useTokenFilters } from './hooks/useTokenFilters';
 import { Coins } from 'lucide-react';
 import { IStakingToken } from './types';
-import { fetchTokens } from './api/token';
 
-const mockTokens = [
-  {
-    id: '1',
-    name: 'Staked Ethereum',
-    symbol: 'stETH',
-    price: 3245.67,
-    marketCap: 15000000000,
-    volume24h: 523000000,
-    tvl: 12000000000,
-    apy: 4.5,
-    ratio: 1.0023
-  },
-  {
-    id: '2',
-    name: 'Rocket Pool ETH',
-    symbol: 'rETH',
-    price: 3250.12,
-    marketCap: 8000000000,
-    volume24h: 321000000,
-    tvl: 6000000000,
-    apy: 4.8,
-    ratio: 1.0045
-  },
-  {
-    id: '3',
-    name: 'Staked BNB',
-    symbol: 'sBNB',
-    price: 456.78,
-    marketCap: 3000000000,
-    volume24h: 156000000,
-    tvl: 2500000000,
-    apy: 5.2,
-    ratio: 1.0012
-  }
-];
+import { useTokenData } from './hooks/useTokenData'
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+// const mockTokens = [
+//   {
+//     id: '1',
+//     name: 'Staked Ethereum',
+//     symbol: 'stETH',
+//     price: 3245.67,
+//     marketCap: 15000000000,
+//     volume24h: 523000000,
+//     tvl: 12000000000,
+//     apy: 4.5,
+//     ratio: 1.0023
+//   },
+//   {
+//     id: '2',
+//     name: 'Rocket Pool ETH',
+//     symbol: 'rETH',
+//     price: 3250.12,
+//     marketCap: 8000000000,
+//     volume24h: 321000000,
+//     tvl: 6000000000,
+//     apy: 4.8,
+//     ratio: 1.0045
+//   },
+//   {
+//     id: '3',
+//     name: 'Staked BNB',
+//     symbol: 'sBNB',
+//     price: 456.78,
+//     marketCap: 3000000000,
+//     volume24h: 156000000,
+//     tvl: 2500000000,
+//     apy: 5.2,
+//     ratio: 1.0012
+//   }
+// ];
+
+const queryClient = new QueryClient();
 
 function App() {
   const [selectedToken, setSelectedToken] = useState<IStakingToken | null>(null);
-  const [tokens, setTokens] = useState<IStakingToken[]>([])
+  const { tokens, loading, error } = useTokenData()
 
   const {
     searchQuery,
@@ -55,20 +59,19 @@ function App() {
     activeFilter,
     setActiveFilter,
     filteredTokens,
-  } = useTokenFilters(tokens);
+  } = useTokenFilters(tokens || []);
 
 
- 
-useEffect(()=>{
-  const getTokens=async()=>{
-    const fetchedTokens=await fetchTokens();
-    setTokens(fetchedTokens);
+  if (loading) {
+    return <div>Loading...</div>;
   }
-  getTokens();
-},[])
 
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
   return (
+
     <div className="min-h-screen bg-[#0B0B1E]">
       <nav className="bg-[#151530]/50 backdrop-blur-sm border-b border-indigo-500/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -129,6 +132,7 @@ useEffect(()=>{
         )}
       </main>
     </div>
+
   );
 }
 

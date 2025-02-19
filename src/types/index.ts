@@ -18,30 +18,33 @@ export interface PriceHistory {
 
 export interface IStakingToken{
   id: string;
-  symbol: string;
   name: string;
+  symbol: string;
+  price: number;
+  marketCap: number;
+  volume24h: number;
+  tvl: number;
+  apy: number;
+  ratio: number;
+  platforms: IStakingPlatform[];
+  // New fields from CoinGecko
   image: string;
-  current_price: number;
-  market_cap: number;
-  market_cap_rank: number;
-  fully_diluted_valuation: number;
-  total_volume: number;
-  high_24h: number;
-  low_24h: number;
-  price_change_24h: number;
-  price_change_percentage_24h: number;
-  market_cap_change_24h: number;
-  market_cap_change_percentage_24h: number;
-  circulating_supply: number;
-  total_supply: number;
-  max_supply: number | null;
+  priceChange24h: number;
+  priceChangePercentage24h: number;
+  marketCapRank: number;
+  high24h: number;
+  low24h: number;
   ath: number;
-  ath_change_percentage: number;
-  ath_date: string;
+  athChangePercentage: number;
+  athDate: string;
   atl: number;
-  atl_change_percentage: number;
-  atl_date: string;
-  roi: null;
-  last_updated: string;
+  atlChangePercentage: number;
+  atlDate: string;
+}
+export interface IStakingPlatform {
+  name: string;
+  fee: number;
+  minStake: number;
+  apy: number;
 }
 

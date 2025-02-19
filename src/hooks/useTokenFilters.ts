@@ -1,8 +1,8 @@
 import { useState, useMemo } from 'react';
-import { StakingToken } from '../types';
+import { IStakingToken } from '../types';
 import { FilterOption } from '../components/FilterBar';
 
-export function useTokenFilters(tokens: StakingToken[]) {
+export function useTokenFilters(tokens: IStakingToken[]) {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState<FilterOption>('all');
 
